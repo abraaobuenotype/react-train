@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es6",
+        "sourceMap": true, 
+        "strict": true,
+        "esModuleInterop": true,
+        "noImplicitAny": false,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "app/*": ["src/*"]
+        }
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
