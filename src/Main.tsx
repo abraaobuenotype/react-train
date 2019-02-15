@@ -10,7 +10,9 @@ interface IArrow<P = {}> {
 
 interface IProps {
     ArrowLeft?: IArrow
+    ArrowRight?: IArrow
     slideToShow?: number
+    onChange?: (selected: number) => void
 }
 
 const ExternalContainer = styled('div')`
@@ -41,9 +43,9 @@ const ChildrenContainer = styled('div')`
 
 const ContainerChild = styled('div')`
     ${props => {
-        let value = Math.random() * 0xFF | 0;
-        let grayscale = (value << 16) | (value << 8) | value;
-        let color = '#' + grayscale.toString(16);
+        let value = (Math.random() * 0xff) | 0
+        let grayscale = (value << 16) | (value << 8) | value
+        let color = '#' + grayscale.toString(16)
 
         let { width } = props
         return `
@@ -53,6 +55,8 @@ const ContainerChild = styled('div')`
         flex-basis: 1;
         background-color: ${color}
         cursor: pointer;
+        justify-content: center;
+        align-items: center;
         `
     }}
 `
@@ -72,12 +76,17 @@ class Engine extends Component<IProps> {
     private _selected: number = 0
 
     componentDidMount () {
+        let { onChange } = this.props
         window.addEventListener('resize', this.onResize)
         this.onResize()
+
+        if (onChange) onChange(this._selected)
     }
 
     onResize = () => {
-        this.setState({ widthCalculated: this.calculateChildWidth() })
+        this.setState({ widthCalculated: this.calculateChildWidth() }, () => {
+            this.centerSelected()
+        })
     }
 
     calculateChildWidth = (): number => {
@@ -94,71 +103,69 @@ class Engine extends Component<IProps> {
     }
 
     leftClick = () => {
+        let { onChange } = this.props
         this._selected--
 
         if (this._selected < 0) {
             this._selected = 0
         }
 
-        console.log(this._selected)
-
         this.centerSelected()
+
+        if (onChange) onChange(this._selected)
     }
 
     rightClick = () => {
+        let { onChange } = this.props
         this._selected++
         let len = Object.keys(this._childs).length
         if (this._selected >= len) {
             this._selected = len - 1
         }
 
-        console.log(this._selected)
-
         this.centerSelected()
+
+        if (onChange) onChange(this._selected)
     }
 
     clicked = (index: number) => () => {
+        let { onChange } = this.props
         this._selected = index
 
         this.centerSelected()
+
+        if (onChange) onChange(this._selected)
     }
 
     centerSelected = () => {
         let target: HTMLElement = this._childs[this._selected]
-        let p: HTMLElement = target.parentElement
+        let p: HTMLElement = target.parentElement as HTMLElement
 
         console.dir(target)
 
-        let pos: number = this._childrenContainer.clientWidth / 2 - target.offsetLeft
+        let pos: number = (this._childrenContainer as HTMLElement).clientWidth / 2 - target.offsetLeft
 
-        console.log(pos);
+        console.log(pos)
 
-        if (Math.abs(pos) > p.clientWidth - this._childrenContainer.clientWidth){
-            pos = -(p.clientWidth - this._childrenContainer.clientWidth)
+        if (Math.abs(pos) > p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth) {
+            pos = -(p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth)
         }
 
         if (pos > 0) {
             pos = 0
         }
 
-        TweenMax.to(p, 0.3, {x: pos})
-        
+        TweenMax.to(p, 0.3, { x: pos })
     }
 
     render () {
-        let { ArrowLeft } = this.props
+        let { ArrowLeft, ArrowRight } = this.props
         let { widthCalculated } = this.state
         console.log(this.props)
         return (
             <ExternalContainer>
                 <Box>
-                    {ArrowLeft ? (
-                        <ArrowLeft />
-                    ) : (
-                        <ArrowContainer onClick={this.leftClick}>
-                            <Arrow />
-                        </ArrowContainer>
-                    )}
+                    <ArrowContainer onClick={this.leftClick}>{ArrowLeft ? <ArrowLeft /> : <Arrow />}</ArrowContainer>
                     <ChildrenContainer
                         ref={el => {
                             if (el) this._childrenContainer = el
@@ -181,10 +188,10 @@ class Engine extends Component<IProps> {
                                     </ContainerChild>
                                 )
                             })}
-                        </ChildrenContainer>
-                    </Flex>
+                        </Flex>
+                    </ChildrenContainer>
                     <ArrowContainer onClick={this.rightClick}>
-                        <Arrow rot='180deg' />
+                        {ArrowRight ? <ArrowRight /> : <Arrow rot='180deg' />}
                     </ArrowContainer>
                 </Box>
             </ExternalContainer>
