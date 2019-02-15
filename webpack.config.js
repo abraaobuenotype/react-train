@@ -19,7 +19,7 @@ module.exports = ({
     }) =>
     webpackMerge({
             mode,
-            entry: [path.resolve(__dirname, 'src/Main.ts')],
+            entry: [path.resolve(__dirname, 'src/Main.tsx')],
             output: {
                 path: path.resolve(__dirname, 'dist/'),
                 filename: 'react-train.js',
@@ -30,8 +30,9 @@ module.exports = ({
 
             module: {
                 rules: [{
-                        test: /\.tsx?$/,
-                        loader: 'awesome-typescript-loader'
+                        test: /\.tsx?$/,                        
+                        include: [path.resolve(__dirname, 'src/')],
+                        use: ['awesome-typescript-loader']
                     },
                     {
                         enforce: 'pre',
@@ -65,9 +66,9 @@ module.exports = ({
             ],
 
             externals: {
-                'react': 'react',
-                'react-dom': 'react-dom',
-                'styled-components': 'styled-components'
+                'React': 'react',
+                'ReactDOM': 'react-dom',
+                'styled': 'styped-components'
             }
         },
         modeConfig(mode),
