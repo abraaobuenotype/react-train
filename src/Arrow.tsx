@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ArrowContainer = styled('div')`
+const ArrowContainerT = styled('div')`
     display: block;
     position: relative;
     border-radius: 4px;
@@ -11,7 +11,7 @@ const ArrowContainer = styled('div')`
     top: -40%
 `
 
-const Icon = styled('div')`
+const IconT = styled('div')`
     ${props => {
         let { x, rot, color } = props
         return `
@@ -37,7 +37,7 @@ const Icon = styled('div')`
     }}
 `
 
-const Circle = styled('div')`
+const CircleT = styled('div')`
     width: 30px;
     height: 30px;
     display: flex;
@@ -49,12 +49,12 @@ const Circle = styled('div')`
 `
 
 const Arrow = props => (
-    <Circle rot={props.rot}>
-        <ArrowContainer>
-            <Icon />
-            <Icon x='21px' rot='-45deg' />
-        </ArrowContainer>
-    </Circle>
+    <CircleT rot={props.rot}>
+        <ArrowContainerT>
+            <IconT />
+            <IconT x='21px' rot='-45deg' />
+        </ArrowContainerT>
+    </CircleT>
 )
 
 export default Arrow

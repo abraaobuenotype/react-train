@@ -15,7 +15,7 @@ interface IProps {
     onChange?: (selected: number) => void
 }
 
-const ExternalContainer = styled('div')`
+const ExternalContainerTrain = styled('div')`
     ${props => {
         return `
             display: flex;
@@ -30,18 +30,18 @@ const BoxTrain = styled('div')`
     justify-content: center;
 `
 
-const ArrowContainer = styled('div')`
+const ArrowContainerTrain = styled('div')`
     display: flex;
     cursor: pointer;
 `
 
-const ChildrenContainer = styled('div')`
+const ChildrenContainerTrain = styled('div')`
     display: flex;
     flex-grow: 1;
     overflow-x: hidden;
 `
 
-const ContainerChild = styled('div')`
+const ContainerChildTrain = styled('div')`
     ${props => {
         let value = (Math.random() * 0xff) | 0
         let grayscale = (value << 16) | (value << 8) | value
@@ -163,10 +163,12 @@ class Engine extends Component<IProps> {
         let { widthCalculated } = this.state
         console.log(this.props)
         return (
-            <ExternalContainer>
+            <ExternalContainerTrain>
                 <BoxTrain>
-                    <ArrowContainer onClick={this.leftClick}>{ArrowLeft ? <ArrowLeft /> : <Arrow />}</ArrowContainer>
-                    <ChildrenContainer
+                    <ArrowContainerTrain onClick={this.leftClick}>
+                        {ArrowLeft ? <ArrowLeft /> : <Arrow />}
+                    </ArrowContainerTrain>
+                    <ChildrenContainerTrain
                         ref={el => {
                             if (el) this._childrenContainer = el
                         }}
@@ -174,7 +176,7 @@ class Engine extends Component<IProps> {
                         <FlexTrain>
                             {(this.props.children as Array<any>).map((el, i) => {
                                 return (
-                                    <ContainerChild
+                                    <ContainerChildTrain
                                         ref={el => {
                                             if (el) {
                                                 this.registerChild(el, i)
@@ -185,16 +187,16 @@ class Engine extends Component<IProps> {
                                         onClick={this.clicked(i)}
                                     >
                                         {el}
-                                    </ContainerChild>
+                                    </ContainerChildTrain>
                                 )
                             })}
                         </FlexTrain>
-                    </ChildrenContainer>
-                    <ArrowContainer onClick={this.rightClick}>
+                    </ChildrenContainerTrain>
+                    <ArrowContainerTrain onClick={this.rightClick}>
                         {ArrowRight ? <ArrowRight /> : <Arrow rot='180deg' />}
-                    </ArrowContainer>
+                    </ArrowContainerTrain>
                 </BoxTrain>
-            </ExternalContainer>
+            </ExternalContainerTrain>
         )
     }
 }
