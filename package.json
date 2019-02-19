@@ -1,19 +1,20 @@
 {
     "name": "react-train",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "react-train",
-    "main": "index.js",
+    "main": "src/Main.js",
     "repository": {
         "type": "git",
-        "url": "git+https://gitlab.com/abraao.as3/react-train.git"
+        "url": "git+https://github.com/abraaobuenotype/react-train.git"
     },
-    "keywords": [],
     "author": "",
-    "license": "MIT",
+    "keywords": [],
+    "license": "MIT Licence",
+    "readme": "README.md",
     "bugs": {
-        "url": "https://gitlab.com/abraao.as3/react-train/issues"
+        "url": "https://github.com/abraaobuenotype/react-train/issues"
     },
-    "homepage": "https://gitlab.com/abraao.as3/react-train#readme",
+    "homepage": "https://github.com/abraaobuenotype/react-train#readme",
     "devDependencies": {
         "awesome-typescript-loader": "^5.2.1",
         "clean-webpack-plugin": "^1.0.1",
