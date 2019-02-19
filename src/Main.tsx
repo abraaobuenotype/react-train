@@ -24,7 +24,7 @@ const ExternalContainer = styled('div')`
     }}
 `
 
-const Box = styled('div')`
+const BoxTrain = styled('div')`
     width: 100%;
     display: Flex;
     justify-content: center;
@@ -61,7 +61,7 @@ const ContainerChild = styled('div')`
     }}
 `
 
-const Flex = styled('div')`
+const FlexTrain = styled('div')`
     display: flex;
     flex-grow: 1;
 `
@@ -164,14 +164,14 @@ class Engine extends Component<IProps> {
         console.log(this.props)
         return (
             <ExternalContainer>
-                <Box>
+                <BoxTrain>
                     <ArrowContainer onClick={this.leftClick}>{ArrowLeft ? <ArrowLeft /> : <Arrow />}</ArrowContainer>
                     <ChildrenContainer
                         ref={el => {
                             if (el) this._childrenContainer = el
                         }}
                     >
-                        <Flex>
+                        <FlexTrain>
                             {(this.props.children as Array<any>).map((el, i) => {
                                 return (
                                     <ContainerChild
@@ -188,12 +188,12 @@ class Engine extends Component<IProps> {
                                     </ContainerChild>
                                 )
                             })}
-                        </Flex>
+                        </FlexTrain>
                     </ChildrenContainer>
                     <ArrowContainer onClick={this.rightClick}>
                         {ArrowRight ? <ArrowRight /> : <Arrow rot='180deg' />}
                     </ArrowContainer>
-                </Box>
+                </BoxTrain>
             </ExternalContainer>
         )
     }
