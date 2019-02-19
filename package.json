@@ -1,8 +1,8 @@
 {
     "name": "react-train",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "react-train",
-    "main": "src/Main.js",
+    "main": "dist/react-train.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/abraaobuenotype/react-train.git"
