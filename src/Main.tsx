@@ -11,14 +11,16 @@ interface IArrow<P = {}> {
 interface IProps {
     ArrowLeft?: IArrow
     ArrowRight?: IArrow
-    slideToShow?: number
+    slideToShow?: number,
+    width?: number | string,
     onChange?: (selected: number) => void
 }
 
 class Engine extends Component<IProps> {
     private ExternalContainer = styled('div')`
-        ${props => {
+        ${({ width }) => {
             return `
+                width: ${width || '100%'};
                 display: flex;
                 flex-wrap: wrap;
             `
