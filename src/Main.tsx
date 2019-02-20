@@ -160,11 +160,11 @@ class Engine extends Component<IProps> {
     }
 
     render () {
-        let { ArrowLeft, ArrowRight } = this.props
+        let { ArrowLeft, ArrowRight, width } = this.props
         let { widthCalculated } = this.state
         console.log(this.props)
         return (
-            <this.ExternalContainer>
+            <this.ExternalContainer width={width}>
                 <this.Box>
                     <this.ArrowContainer onClick={this.leftClick}>
                         {ArrowLeft ? <ArrowLeft /> : <Arrow />}
