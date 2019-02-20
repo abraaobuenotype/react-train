@@ -15,58 +15,57 @@ interface IProps {
     onChange?: (selected: number) => void
 }
 
-const ExternalContainerTrain = styled('div')`
-    ${props => {
-        return `
-            display: flex;
-            flex-wrap: wrap;
-        `
-    }}
-`
-
-const BoxTrain = styled('div')`
-    width: 100%;
-    display: Flex;
-    justify-content: center;
-`
-
-const ArrowContainerTrain = styled('div')`
-    display: flex;
-    cursor: pointer;
-`
-
-const ChildrenContainerTrain = styled('div')`
-    display: flex;
-    flex-grow: 1;
-    overflow-x: hidden;
-`
-
-const ContainerChildTrain = styled('div')`
-    ${props => {
-        let value = (Math.random() * 0xff) | 0
-        let grayscale = (value << 16) | (value << 8) | value
-        let color = '#' + grayscale.toString(16)
-
-        let { width } = props
-        return `
-        width: ${width}px;
-        display: flex;
-        flex-shrink: 0;
-        flex-basis: 1;
-        background-color: ${color}
-        cursor: pointer;
-        justify-content: center;
-        align-items: center;
-        `
-    }}
-`
-
-const FlexTrain = styled('div')`
-    display: flex;
-    flex-grow: 1;
-`
-
 class Engine extends Component<IProps> {
+    private ExternalContainer = styled('div')`
+        ${props => {
+            return `
+                display: flex;
+                flex-wrap: wrap;
+            `
+        }}
+    `
+
+    private Box = styled('div')`
+        width: 100%;
+        display: Flex;
+        justify-content: center;
+    `
+
+    private ArrowContainer = styled('div')`
+        display: flex;
+        cursor: pointer;
+    `
+
+    private ChildrenContainer = styled('div')`
+        display: flex;
+        flex-grow: 1;
+        overflow-x: hidden;
+    `
+
+    private ContainerChild = styled('div')`
+        ${props => {
+            let value = (Math.random() * 0xff) | 0
+            let grayscale = (value << 16) | (value << 8) | value
+            let color = '#' + grayscale.toString(16)
+
+            let { width } = props
+            return `
+            width: ${width}px;
+            display: flex;
+            flex-shrink: 0;
+            flex-basis: 1;
+            background-color: ${color}
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            `
+        }}
+    `
+
+    private Flex = styled('div')`
+        display: flex;
+        flex-grow: 1;
+    `
     state = {
         widthCalculated: 10
     }
@@ -163,20 +162,20 @@ class Engine extends Component<IProps> {
         let { widthCalculated } = this.state
         console.log(this.props)
         return (
-            <ExternalContainerTrain>
-                <BoxTrain>
-                    <ArrowContainerTrain onClick={this.leftClick}>
+            <this.ExternalContainer>
+                <this.Box>
+                    <this.ArrowContainer onClick={this.leftClick}>
                         {ArrowLeft ? <ArrowLeft /> : <Arrow />}
-                    </ArrowContainerTrain>
-                    <ChildrenContainerTrain
+                    </this.ArrowContainer>
+                    <this.ChildrenContainer
                         ref={el => {
                             if (el) this._childrenContainer = el
                         }}
                     >
-                        <FlexTrain>
+                        <this.Flex>
                             {(this.props.children as Array<any>).map((el, i) => {
                                 return (
-                                    <ContainerChildTrain
+                                    <this.ContainerChild
                                         ref={el => {
                                             if (el) {
                                                 this.registerChild(el, i)
@@ -187,16 +186,16 @@ class Engine extends Component<IProps> {
                                         onClick={this.clicked(i)}
                                     >
                                         {el}
-                                    </ContainerChildTrain>
+                                    </this.ContainerChild>
                                 )
                             })}
-                        </FlexTrain>
-                    </ChildrenContainerTrain>
-                    <ArrowContainerTrain onClick={this.rightClick}>
+                        </this.Flex>
+                    </this.ChildrenContainer>
+                    <this.ArrowContainer onClick={this.rightClick}>
                         {ArrowRight ? <ArrowRight /> : <Arrow rot='180deg' />}
-                    </ArrowContainerTrain>
-                </BoxTrain>
-            </ExternalContainerTrain>
+                    </this.ArrowContainer>
+                </this.Box>
+            </this.ExternalContainer>
         )
     }
 }
