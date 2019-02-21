@@ -144,7 +144,7 @@ class Engine extends Component<IProps> {
 
         console.dir(target)
 
-        let pos: number = (this._childrenContainer as HTMLElement).clientWidth / 2 - target.offsetLeft
+        let pos: number = (this._childrenContainer as HTMLElement).clientWidth / 2 - target.offsetLeft - target.offsetWidth / 2
 
         console.log(pos)
 
