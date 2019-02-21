@@ -136,7 +136,9 @@ class Engine extends Component<IProps> {
 
         this.centerSelected()
 
-        if (onChange && dispatch) onChange(this._selected)
+        console.log('-----------------')
+        console.log(Boolean(dispatch))
+        if (onChange && Boolean(dispatch)) onChange(this._selected)
     }
 
     centerSelected = () => {
