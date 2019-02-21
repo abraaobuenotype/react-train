@@ -13,6 +13,7 @@ interface IProps {
     ArrowRight?: IArrow
     slideToShow?: number,
     width?: number | string,
+    selected?: number | undefined,
     onChange?: (selected: number) => void
 }
 
@@ -160,9 +161,14 @@ class Engine extends Component<IProps> {
     }
 
     render () {
-        let { ArrowLeft, ArrowRight, width } = this.props
+        let { ArrowLeft, ArrowRight, width, selected } = this.props
         let { widthCalculated } = this.state
         console.log(this.props)
+
+        if (this._childs && Object.keys(this._childs).length > 0 && selected && selected != this._selected) {
+            this.clicked(selected)()
+        }
+
         return (
             <this.ExternalContainer width={width}>
                 <this.Box>
