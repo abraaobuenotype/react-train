@@ -130,13 +130,13 @@ class Engine extends Component<IProps> {
         if (onChange) onChange(this._selected)
     }
 
-    clicked = (index: number) => () => {
+    clicked = (index: number) => (dispatch = true) => {
         let { onChange } = this.props
         this._selected = index
 
         this.centerSelected()
 
-        if (onChange) onChange(this._selected)
+        if (onChange && dispatch) onChange(this._selected)
     }
 
     centerSelected = () => {
@@ -168,7 +168,7 @@ class Engine extends Component<IProps> {
 
         if (this._childs && Object.keys(this._childs).length > 0 && selected && selected != this._selected) {
             if (this._childs[selected]) {
-                this.clicked(selected)()
+                this.clicked(selected)(false)
             }
         }
 
