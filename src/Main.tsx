@@ -11,9 +11,9 @@ interface IArrow<P = {}> {
 interface IProps {
     ArrowLeft?: IArrow
     ArrowRight?: IArrow
-    slideToShow?: number,
-    width?: number | string,
-    selected?: number | undefined,
+    slideToShow?: number
+    width?: number | string
+    selected?: number | undefined
     onChange?: (selected: number) => void
 }
 
@@ -145,7 +145,8 @@ class Engine extends Component<IProps> {
 
         console.dir(target)
 
-        let pos: number = (this._childrenContainer as HTMLElement).clientWidth / 2 - target.offsetLeft - target.offsetWidth / 2
+        let pos: number =
+            (this._childrenContainer as HTMLElement).clientWidth / 2 - target.offsetLeft - target.offsetWidth / 2
 
         console.log(pos)
 
@@ -166,7 +167,9 @@ class Engine extends Component<IProps> {
         console.log(this.props)
 
         if (this._childs && Object.keys(this._childs).length > 0 && selected && selected != this._selected) {
-            this.clicked(selected)()
+            if (this._childs[selected]) {
+                this.clicked(selected)()
+            }
         }
 
         return (
