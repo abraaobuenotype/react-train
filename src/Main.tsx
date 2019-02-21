@@ -78,11 +78,8 @@ class Engine extends Component<IProps> {
     private _selected: number = 0
 
     componentDidMount () {
-        let { onChange } = this.props
         window.addEventListener('resize', this.onResize)
         this.onResize()
-
-        if (onChange) onChange(this._selected)
     }
 
     onResize = () => {
