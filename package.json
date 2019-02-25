@@ -1,6 +1,6 @@
 {
     "name": "react-train",
-    "version": "0.1.41",
+    "version": "0.1.41-a0.7",
     "description": "react-train",
     "main": "dist/react-train.js",
     "repository": {

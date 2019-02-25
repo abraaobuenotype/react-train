@@ -76,6 +76,8 @@ class Engine extends Component<IProps> {
     private _childrenContainer: HTMLDivElement | null = null
     private _childs: Object = {}
     private _selected: number = 0
+    private _updating: boolean = false
+    private _enter_frame: number | undefined = undefined
 
     componentDidMount () {
         window.addEventListener('resize', this.onResize)
@@ -133,43 +135,68 @@ class Engine extends Component<IProps> {
 
         this.centerSelected()
 
-        console.log('-----------------')
-        console.log(Boolean(dispatch))
         if (onChange && Boolean(dispatch)) onChange(this._selected)
     }
 
     centerSelected = () => {
-        let target: HTMLElement = this._childs[this._selected]
-        let p: HTMLElement = target.parentElement as HTMLElement
-
-        console.dir(target)
-
-        let pos: number =
-            (this._childrenContainer as HTMLElement).clientWidth / 2 - target.offsetLeft - target.offsetWidth / 2
-
-        console.log(pos)
-
-        if (Math.abs(pos) > p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth) {
-            pos = -(p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth)
+        if (this._enter_frame) {
+            clearInterval(this._enter_frame)
         }
 
-        if (pos > 0) {
-            pos = 0
-        }
+        this._enter_frame = setInterval(() => {
+            if (!this._updating) {
+                clearInterval(this._enter_frame)
+                this._enter_frame = undefined
 
-        TweenMax.to(p, 0.3, { x: pos })
+                let target: HTMLElement = this._childs[this._selected]
+                let p: HTMLElement = target.parentElement as HTMLElement
+
+                let pos: number =
+                    (this._childrenContainer as HTMLElement).clientWidth / 2 -
+                    target.offsetLeft -
+                    target.offsetWidth / 2
+
+                if (Math.abs(pos) > p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth) {
+                    pos = -(p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth)
+                }
+
+                if (pos > 0) {
+                    pos = 0
+                }
+
+                TweenMax.to(p, 0.3, { x: pos })
+            }
+        }, 1000 / 60)
     }
 
-    render () {
-        let { ArrowLeft, ArrowRight, width, selected } = this.props
-        let { widthCalculated } = this.state
-        console.log(this.props)
+    componentWillUpdate () {
+        this._updating = true
+        if (this._childs && Object.keys(this._childs).length > 0) {
+            this._childs = {}
+        }
+        return true
+    }
+
+    componentDidUpdate () {
+        let { selected } = this.props
+        this._updating = false
 
         if (this._childs && Object.keys(this._childs).length > 0 && selected && selected != this._selected) {
             if (this._childs[selected]) {
                 this.clicked(selected)(false)
             }
         }
+    }
+
+    componentWillUnmount(){
+        if (this._enter_frame) {
+            clearInterval(this._enter_frame)
+        }
+    }
+
+    render () {
+        let { ArrowLeft, ArrowRight, width } = this.props
+        let { widthCalculated } = this.state        
 
         return (
             <this.ExternalContainer width={width}>
