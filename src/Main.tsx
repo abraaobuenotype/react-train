@@ -1,7 +1,6 @@
 import React, { Component, ReactElement } from 'react'
-import styled from 'styled-components'
 import { TweenMax } from 'gsap/TweenMax'
-
+import { Flex, Box, ExternalContainer, ArrowContainer, ChildrenContainer, ContainerChild } from './Containers'
 import Arrow from './Arrow'
 
 interface IArrow<P = {}> {
@@ -18,57 +17,6 @@ interface IProps {
 }
 
 class Engine extends Component<IProps> {
-    private ExternalContainer = styled('div')`
-        ${({ width }) => {
-            return `
-                width: ${width || '100%'};
-                display: flex;
-                flex-wrap: wrap;
-            `
-        }}
-    `
-
-    private Box = styled('div')`
-        width: 100%;
-        display: Flex;
-        justify-content: center;
-    `
-
-    private ArrowContainer = styled('div')`
-        display: flex;
-        cursor: pointer;
-    `
-
-    private ChildrenContainer = styled('div')`
-        display: flex;
-        flex-grow: 1;
-        overflow-x: hidden;
-    `
-
-    private ContainerChild = styled('div')`
-        ${props => {
-            let value = (Math.random() * 0xff) | 0
-            let grayscale = (value << 16) | (value << 8) | value
-            let color = '#' + grayscale.toString(16)
-
-            let { width } = props
-            return `
-            width: ${width}px;
-            display: flex;
-            flex-shrink: 0;
-            flex-basis: 1;
-            background-color: ${color}
-            cursor: pointer;
-            justify-content: center;
-            align-items: center;
-            `
-        }}
-    `
-
-    private Flex = styled('div')`
-        display: flex;
-        flex-grow: 1;
-    `
     state = {
         widthCalculated: 10
     }
@@ -188,7 +136,7 @@ class Engine extends Component<IProps> {
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount () {
         if (this._enter_frame) {
             clearInterval(this._enter_frame)
         }
@@ -196,23 +144,23 @@ class Engine extends Component<IProps> {
 
     render () {
         let { ArrowLeft, ArrowRight, width } = this.props
-        let { widthCalculated } = this.state        
+        let { widthCalculated } = this.state
 
         return (
-            <this.ExternalContainer width={width}>
-                <this.Box>
-                    <this.ArrowContainer onClick={this.leftClick}>
+            <ExternalContainer width={width}>
+                <Box>
+                    <ArrowContainer onClick={this.leftClick}>
                         {ArrowLeft ? <ArrowLeft /> : <Arrow />}
-                    </this.ArrowContainer>
-                    <this.ChildrenContainer
+                    </ArrowContainer>
+                    <ChildrenContainer
                         ref={el => {
                             if (el) this._childrenContainer = el
                         }}
                     >
-                        <this.Flex>
+                        <Flex>
                             {(this.props.children as Array<any>).map((el, i) => {
                                 return (
-                                    <this.ContainerChild
+                                    <ContainerChild
                                         ref={el => {
                                             if (el) {
                                                 this.registerChild(el, i)
@@ -223,16 +171,16 @@ class Engine extends Component<IProps> {
                                         onClick={this.clicked(i)}
                                     >
                                         {el}
-                                    </this.ContainerChild>
+                                    </ContainerChild>
                                 )
                             })}
-                        </this.Flex>
-                    </this.ChildrenContainer>
-                    <this.ArrowContainer onClick={this.rightClick}>
+                        </Flex>
+                    </ChildrenContainer>
+                    <ArrowContainer onClick={this.rightClick}>
                         {ArrowRight ? <ArrowRight /> : <Arrow rot='180deg' />}
-                    </this.ArrowContainer>
-                </this.Box>
-            </this.ExternalContainer>
+                    </ArrowContainer>
+                </Box>
+            </ExternalContainer>
         )
     }
 }

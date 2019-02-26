@@ -59,3 +59,6 @@ dwsync.xml
 node_modules
 closure-compiler
 bin
+dist
+!dist/react-train.js
+!dist/react-train.js.map
