@@ -12,10 +12,10 @@
 <body style='margin: 0px;'>
     <div id='app'></div>
     <script>
-        let arr = new Array(20).fill()
+        let arr = new Array(43).fill()
         ReactDOM.render(React.createElement(
             train.Engine,
-            {slideToShow: 1, onChange: (selected) => {console.log(selected)}},
+            {slideToShow: 5, onChange: (selected) => {console.log(selected)}, selected: 30},
             arr.map((el, i) => {
                 return React.createElement('div', null, i)
             })

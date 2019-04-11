@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from 'react'
+import React, { Fragment, Component, ReactElement } from 'react'
 import { TweenMax } from 'gsap/TweenMax'
 import { Flex, Box, ExternalContainer, ArrowContainer, ChildrenContainer, ContainerChild } from './Containers'
 import Arrow from './Arrow'
@@ -25,7 +25,10 @@ class Engine extends Component<IProps> {
     private _childs: Object = {}
     private _selected: number = 0
     private _updating: boolean = false
+    private _updateWidth: boolean = false
     private _enter_frame: number | undefined = undefined
+    private _tempWidth: string = ''
+    private _awaitUpdate:boolean = false
 
     componentDidMount () {
         window.addEventListener('resize', this.onResize)
@@ -99,13 +102,15 @@ class Engine extends Component<IProps> {
                 let target: HTMLElement = this._childs[this._selected]
                 let p: HTMLElement = target.parentElement as HTMLElement
 
-                let pos: number =
-                    (this._childrenContainer as HTMLElement).clientWidth / 2 -
-                    target.offsetLeft -
-                    target.offsetWidth / 2
+                if(!this._childrenContainer) return
 
-                if (Math.abs(pos) > p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth) {
-                    pos = -(p.clientWidth - (this._childrenContainer as HTMLElement).clientWidth)
+                let pos: number =
+                    (this._childrenContainer.clientWidth / 2) -
+                    target.offsetLeft -
+                    (target.offsetWidth / 2)
+
+                if (Math.abs(pos) > p.clientWidth - this._childrenContainer.clientWidth) {
+                    pos = -(p.clientWidth - this._childrenContainer.clientWidth)
                 }
 
                 if (pos > 0) {
@@ -117,11 +122,31 @@ class Engine extends Component<IProps> {
         }, 1000 / 60)
     }
 
-    componentWillUpdate () {
+    calcdulateChildrenContainer = () => {
+        let parent: HTMLElement = this._childrenContainer.parentElement as HTMLElement;
+        let fc: HTMLElement = parent.firstChild as HTMLElement
+        let lc: HTMLElement = parent.lastChild as HTMLElement
+
+        let w = parent.clientWidth - fc.clientWidth - lc.clientWidth
+        this._childrenContainer.style.width = `${w}px`
+
+        this.setState({ widthCalculated: this.calculateChildWidth() }, () => {
+            this.centerSelected()
+        })
+    }
+
+    shouldComponentUpdate (next) {
         this._updating = true
+        this._updateWidth = false
         if (this._childs && Object.keys(this._childs).length > 0) {
             this._childs = {}
+        }        
+
+        if(next.width != this._tempWidth){
+            this._tempWidth = next.width
+            this._updateWidth = true
         }
+
         return true
     }
 
@@ -132,6 +157,16 @@ class Engine extends Component<IProps> {
         if (this._childs && Object.keys(this._childs).length > 0 && selected && selected != this._selected) {
             if (this._childs[selected]) {
                 this.clicked(selected)(false)
+            }
+        }
+
+        if(this._updateWidth) {
+            this._updateWidth = false
+            if (!this._awaitUpdate){
+                this._awaitUpdate = true
+                setTimeout(() => {                                
+                    this.calcdulateChildrenContainer()                    
+                }, 1000)
             }
         }
     }
@@ -154,7 +189,10 @@ class Engine extends Component<IProps> {
                     </ArrowContainer>
                     <ChildrenContainer
                         ref={el => {
-                            if (el) this._childrenContainer = el
+                            if (el) {
+                                this._childrenContainer = el
+                                // this.calcdulateChildrenContainer()
+                            }
                         }}
                     >
                         <Flex>

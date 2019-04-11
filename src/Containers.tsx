@@ -28,8 +28,8 @@ const ArrowContainer = styled('div')`
 
 const ChildrenContainer = styled('div')`
     display: flex;
-    flex-grow: 1;
     overflow-x: hidden;
+    width: 0px;
 `
 
 const ContainerChild = styled('div')`
